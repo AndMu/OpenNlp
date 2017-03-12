@@ -125,17 +125,17 @@ namespace OpenNLP.Tools.Chunker
 		                results.Add(currentSentenceChunk); 
 	                }
 
-                    var index = results.Count;
                     if (chunks[currentChunk].Length > 2)
                     {
                         var tag = chunks[currentChunk].Substring(2);
-                        currentSentenceChunk = new SentenceChunk(tag, index);
-                    }
-                    else
-                    {
-                        currentSentenceChunk = new SentenceChunk(index);
+                        currentSentenceChunk = new SentenceChunk(tag, results.Count);
                     }
 				}
+
+                if (currentSentenceChunk == null)
+				{
+                    currentSentenceChunk = new SentenceChunk(results.Count);
+                }
 
                 // in all cases add the tagged word
 			    var word = tokens[currentChunk];
@@ -144,6 +144,7 @@ namespace OpenNLP.Tools.Chunker
 			    var taggedWord = new TaggedWord(word, wTag, wIndex);
                 currentSentenceChunk.TaggedWords.Add(taggedWord);
 			}
+
             // add last chunk
             results.Add(currentSentenceChunk);
 
