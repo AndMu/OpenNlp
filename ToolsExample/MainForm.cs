@@ -7,6 +7,7 @@ using System.Windows.Forms;
 using System.Data;
 using System.Text;
 using System.Configuration;
+using System.Linq;
 using OpenNLP.Tools.Chunker;
 using OpenNLP.Tools.Coreference.Similarity;
 using OpenNLP.Tools.Lang.English;
@@ -365,7 +366,7 @@ namespace ToolsExample
 				_chunker = new EnglishTreebankChunker(_modelPath + "EnglishChunk.nbin");
 			}
 			
-			return string.Join(" ", _chunker.GetChunks(tokens, tags));
+			return string.Join(" ", _chunker.GetChunks(tokens, tags).ToList());
 		}
 
 		private Parse ParseSentence(string sentence)

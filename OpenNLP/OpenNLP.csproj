@@ -508,9 +508,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
-  </ItemGroup>
-  <ItemGroup>
     <Folder Include="Tools\Parser\Common\" />
     <Folder Include="Tools\Parser\LexParser\" />
   </ItemGroup>
@@ -518,6 +515,7 @@
   <PropertyGroup>
     <PreBuildEvent>
     </PreBuildEvent>
-    <PostBuildEvent>$(SolutionDir)nuget\NuGet.exe pack $(SolutionDir)\OpenNLP\OpenNLP.csproj -Prop Configuration=$(ConfigurationName) -IncludeReferencedProjects</PostBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
   </PropertyGroup>
 </Project>

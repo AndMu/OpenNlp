@@ -33,10 +33,7 @@
 //License along with this program; if not, write to the Free Software
 //Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
-using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Text;
 
 namespace OpenNLP.Tools.Chunker
 {
@@ -82,18 +79,17 @@ namespace OpenNLP.Tools.Chunker
 				{
 					return (false);
 				}
-				else
-				{
-					string lastTag = tags[lastTagIndex];
-					if (lastTag == "O")
-					{
-						return false;
-					}
-					if (lastTag.Substring(2) != outcome.Substring(2))
-					{
-						return false;
-					}
-				}
+
+			    string lastTag = tags[lastTagIndex];
+			    if (lastTag == "O")
+			    {
+			        return false;
+			    }
+
+			    if (lastTag.Substring(2) != outcome.Substring(2))
+			    {
+			        return false;
+			    }
 			}
 			return true;
 		}
@@ -110,45 +106,41 @@ namespace OpenNLP.Tools.Chunker
 		/// <returns>
 		/// A string containing the formatted chunked sentence
 		/// </returns>
-		public List<SentenceChunk> GetChunks(string[] tokens, string[] tags)
+		public SentenceChunk[] GetChunks(string[] tokens, string[] tags)
 		{
 		    var results = new List<SentenceChunk>();
-
 			string[] chunks = Chunk(tokens, tags);
             SentenceChunk currentSentenceChunk = null;
-			for (int currentChunk = 0, chunkCount = chunks.Length; currentChunk < chunkCount; currentChunk++)
+			for (int i = 0; i < chunks.Length; i++)
 			{
-				if (chunks[currentChunk].StartsWith("B-") || chunks[currentChunk] == "O")
+                if (i > 0 &&
+                   !chunks[i].StartsWith("I-") &&
+                   chunks[i - 1] != "O")
                 {
-                    if (currentSentenceChunk != null)
-	                {
-		                results.Add(currentSentenceChunk); 
-	                }
+                    currentSentenceChunk = null;
+                }
 
-                    if (chunks[currentChunk].Length > 2)
-                    {
-                        var tag = chunks[currentChunk].Substring(2);
-                        currentSentenceChunk = new SentenceChunk(tag, results.Count);
-                    }
-				}
+                if (chunks[i].StartsWith("B-"))
+                {
+                    currentSentenceChunk = new SentenceChunk(chunks[i].Substring(2), i);
+                    results.Add(currentSentenceChunk);
+                }
 
                 if (currentSentenceChunk == null)
 				{
                     currentSentenceChunk = new SentenceChunk(results.Count);
+                    results.Add(currentSentenceChunk);
                 }
 
                 // in all cases add the tagged word
-			    var word = tokens[currentChunk];
-			    var wTag = tags[currentChunk];
+			    var word = tokens[i];
+			    var wTag = tags[i];
 			    var wIndex = currentSentenceChunk.TaggedWords.Count;
 			    var taggedWord = new TaggedWord(word, wTag, wIndex);
                 currentSentenceChunk.TaggedWords.Add(taggedWord);
 			}
 
-            // add last chunk
-            results.Add(currentSentenceChunk);
-
-		    return results;
+		    return results.ToArray();
 		}
 
 		/// <summary>
@@ -161,7 +153,7 @@ namespace OpenNLP.Tools.Chunker
 		/// <returns>
 		/// A string containing the formatted chunked sentence
 		/// </returns>
-		public List<SentenceChunk> GetChunks(string data)
+		public SentenceChunk[] GetChunks(string data)
 		{
 			string[] tokenAndTags = data.Split(' ');
 			var tokens = new string[tokenAndTags.Length];
