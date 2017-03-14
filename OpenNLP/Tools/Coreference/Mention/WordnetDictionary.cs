@@ -45,6 +45,7 @@ namespace OpenNLP.Tools.Coreference.Mention
 	public class WordnetDictionary : IDictionary
 	{
         private WordNetEngine mEngine;
+
         private IOperation[] mDefaultOperations;
 
         private static string[] empty = new string[0];

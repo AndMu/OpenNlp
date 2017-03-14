@@ -44,8 +44,11 @@ namespace OpenNLP.Tools.Chunker
 	public class ChunkerEventReader : SharpEntropy.ITrainingEventReader
 	{
 		private IChunkerContextGenerator mContextGenerator;
+
         private SharpEntropy.ITrainingDataReader<string> mDataReader;
+
 		private SharpEntropy.TrainingEvent[] mEvents;
+
 		private int mEventIndex;
 		
 		/// <summary>

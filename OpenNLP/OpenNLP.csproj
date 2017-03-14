@@ -76,10 +76,6 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="SharpWordNet, Version=1.0.2435.492, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\SharpWordNet\bin\Debug\SharpWordNet.dll</HintPath>
-    </Reference>
     <Reference Include="System">
       <Name>System</Name>
     </Reference>
@@ -502,14 +498,18 @@
     <Compile Include="Tools\Util\XMLUtils.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Tools\Parser\Common\" />
+    <Folder Include="Tools\Parser\LexParser\" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\SharpEntropy\SharpEntropy.csproj">
       <Project>{bf0bf8b0-1894-4edf-bf51-f370b063797e}</Project>
       <Name>SharpEntropy</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Tools\Parser\Common\" />
-    <Folder Include="Tools\Parser\LexParser\" />
+    <ProjectReference Include="..\SharpWordNet\SharpWordNet.csproj">
+      <Project>{4c78c577-d001-45ea-9893-f5570bab16c0}</Project>
+      <Name>SharpWordNet</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
